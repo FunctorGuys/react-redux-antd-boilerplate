@@ -1,10 +1,11 @@
 {
   "homepage": ".",
-  "name": "jifcast",
+  "name": "supapp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.19.5",
+    "@ant-design/icons": "^4.2.1",
+    "antd": "^4.4.0",
     "axios": "^0.18.0",
     "ramda": "^0.26.1",
     "react": "^16.8.6",

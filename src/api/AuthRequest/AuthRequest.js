@@ -1,5 +1,5 @@
-import Request from '../request'
-import Normalize from './Normalize'
+import Request from '../request';
+import Normalize from './Normalize';
 
 const AuthRequest = {
   /**
@@ -9,8 +9,8 @@ const AuthRequest = {
   register(data) {
     return Request().post('/join/', data)
       .then(res => Normalize.register.then(res))
-      .catch(err => Normalize.register.catch(err))
+      .catch(err => Normalize.register.catch(err));
   },
-}
+};
 
-export default AuthRequest
+export default AuthRequest;

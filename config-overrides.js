@@ -32,18 +32,18 @@ const devAddBundleVisualizer = (...args) => (config) => {
   return config;
 };
 
-const antdIcon = () => (config) => {
-  config.module.rules = config.module.rules || [];
-  config.module.rules.push({
-    loader: 'webpack-ant-icon-loader',
-    enforce: 'pre',
-    include: [
-      require.resolve('@ant-design/icons/lib/dist')
-    ]
-  });
+// const antdIcon = () => (config) => {
+//   config.module.rules = config.module.rules || [];
+//   config.module.rules.push({
+//     loader: 'webpack-ant-icon-loader',
+//     enforce: 'pre',
+//     include: [
+//       require.resolve('@ant-design/icons/lib/dist')
+//     ]
+//   });
 
-  return config;
-};
+//   return config;
+// };
 
 module.exports = override(
   disableEsLint(),
@@ -61,7 +61,7 @@ module.exports = override(
     libraryDirectory: 'es',
     style: 'css',
   }),
-  antdIcon(),
+  // antdIcon(),
   changeDevtool('source-map'),
   devAddBundleVisualizer(),
 );

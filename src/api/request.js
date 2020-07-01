@@ -1,42 +1,37 @@
-import axios from 'axios'
-import { _store } from 'index'
-import { API_URL } from 'config'
-import { getLoggedInfo } from 'reducers/auth/select'
+import axios from 'axios';
+import { API_URL } from 'config';
+import { _store } from 'index';
+import { getLoggedInfo } from 'reducers/auth/select';
 
-const debugData = response => {
-  return Promise.resolve(response.data)
-}
+const axiosInstance = axios.create({
+  baseURL: API_URL || 'http://localhost:3001/api/v1',
+});
 
-const debugError = er => {
-  return Promise.reject(er.response.data)
-}
+const request = (options = {}) => {
+  const token = getLoggedInfo(_store.getState()).token;
 
-const request = () => {
-  // TEST TOKEN: '1153c118dc277605a676a2f5b4adef9bc71f1413'
-  const token = getLoggedInfo(_store.getState()).token
+  axiosInstance.defaults.headers['Authorization'] = `Token ${token}`;
 
-  const axiosApi = axios.create({
-    baseURL: API_URL,
-    headers: token ? {
-      Authorization: `Token ${token}`
-    } : {}
-  })
-
-  return {
-    get(url, params, options = {}) {
-      return axiosApi.get(url, { params }, options).then(debugData).catch(debugError)
-    },
-    post(url, data, options = {}) {
-      return axiosApi.post(url, data, options).then(debugData).catch(debugError)
-    },
-    put(url, data, options = {}) {
-      return axiosApi.put(url, data, options).then(debugData).catch(debugError)
-    },
-    delete(url, options = {}) {
-      return axiosApi.delete(url, options).then(debugData).catch(debugError)
-    },
+  if (options.headers) {
+    axiosInstance.defaults.headers = Object.assign(
+      {},
+      axiosInstance.defaults.headers,
+      options.headers
+    );
   }
-}
 
+  return axiosInstance;
+};
 
-export default request
+export default request;
+
+export const parseErrorResponse = (err) =>
+  err && err.response ? err.response.data : new Error('Bad request');
+
+export const parseSuccessResponse = (res) => {
+  const { data } = res.data;
+  if (data) return Promise.resolve(data);
+  else {
+    return Promise.reject(new Error('Something went wrong!'));
+  }
+};
